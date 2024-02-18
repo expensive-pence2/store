@@ -1,0 +1,328 @@
+Index: d18/d18/settings.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/d18/d18/settings.py b/d18/d18/settings.py
+--- a/d18/d18/settings.py	(revision c8b02d8982e8d93a0604c4b84798a05f0260eec2)
++++ b/d18/d18/settings.py	(revision 5f5920d98380420fd0a086a125e1fd24c7d81146)
+@@ -37,6 +37,7 @@
+     'django.contrib.sessions',
+     'django.contrib.messages',
+     'django.contrib.staticfiles',
++    'product',
+ ]
+ 
+ MIDDLEWARE = [
+@@ -54,7 +55,7 @@
+ TEMPLATES = [
+     {
+         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+-        'DIRS': [],
++        'DIRS': ['templates'],
+         'APP_DIRS': True,
+         'OPTIONS': {
+             'context_processors': [
+@@ -115,7 +116,10 @@
+ # Static files (CSS, JavaScript, Images)
+ # https://docs.djangoproject.com/en/4.2/howto/static-files/
+ 
+-STATIC_URL = 'static/'
++STATIC_URL = '/static/'
++STATICFILES_DIRS = [
++    BASE_DIR / 'static',
++]
+ 
+ # Default primary key field type
+ # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+Index: d18/d18/urls.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/d18/d18/urls.py b/d18/d18/urls.py
+--- a/d18/d18/urls.py	(revision c8b02d8982e8d93a0604c4b84798a05f0260eec2)
++++ b/d18/d18/urls.py	(revision 5f5920d98380420fd0a086a125e1fd24c7d81146)
+@@ -16,7 +16,10 @@
+ """
+ from django.contrib import admin
+ from django.urls import path
++from product.views import *
+ 
+ urlpatterns = [
+     path('admin/', admin.site.urls),
++    path('', index),
++    path('products', products),
+ ]
+Index: d18/product/templates/index.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/d18/product/templates/index.html b/d18/product/templates/index.html
+--- a/d18/product/templates/index.html	(revision c8b02d8982e8d93a0604c4b84798a05f0260eec2)
++++ b/d18/product/templates/index.html	(revision 0c4996650be442e4d075381bdca535361823a911)
+@@ -8,13 +8,13 @@
+     <meta name="description" content="">
+     <meta name="author" content="">
+ 
+-    <title>Store</title>
++    <title> {{title}} </title>
+ 
+     <!-- Bootstrap core CSS -->
+-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
++    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+ 
+     <!-- Custom styles for this template -->
+-    <link href="vendor/css/index.css" rel="stylesheet">
++    <link href="/static/vendor/css/index.css" rel="stylesheet">
+ 
+ </head>
+ 
+Index: d18/product/templates/products.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/d18/product/templates/products.html b/d18/product/templates/products.html
+--- a/d18/product/templates/products.html	(revision c8b02d8982e8d93a0604c4b84798a05f0260eec2)
++++ b/d18/product/templates/products.html	(revision 0c4996650be442e4d075381bdca535361823a911)
+@@ -11,10 +11,10 @@
+     <title>Store - Каталог</title>
+ 
+     <!-- Bootstrap core CSS -->
+-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
++    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+ 
+     <!-- Custom styles for this template -->
+-    <link href="vendor/css/products.css" rel="stylesheet">
++    <link href="/static/vendor/css/products.css" rel="stylesheet">
+ 
+ </head>
+ 
+@@ -91,13 +91,13 @@
+                 </ol>
+                 <div class="carousel-inner" role="listbox">
+                     <div class="carousel-item active">
+-                        <img class="d-block img-fluid" src="vendor/img/slides/slide-1.jpg" alt="First slide">
++                        <img class="d-block img-fluid" src="/static/vendor/img/slides/slide-1.jpg" alt="First slide">
+                     </div>
+                     <div class="carousel-item">
+-                        <img class="d-block img-fluid" src="vendor/img/slides/slide-2.jpg" alt="Second slide">
++                        <img class="d-block img-fluid" src="/static/vendor/img/slides/slide-2.jpg" alt="Second slide">
+                     </div>
+                     <div class="carousel-item">
+-                        <img class="d-block img-fluid" src="vendor/img/slides/slide-3.jpg" alt="Third slide">
++                        <img class="d-block img-fluid" src="/static/vendor/img/slides/slide-3.jpg" alt="Third slide">
+                     </div>
+                 </div>
+                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+@@ -112,128 +112,27 @@
+ 
+             <div class="row">
+ 
+-                <div class="col-lg-4 col-md-6 mb-4">
+-                    <div class="card h-100">
+-                        <a href="#">
+-                            <img class="card-img-top"
+-                                 src="vendor/img/products/Adidas-hoodie.png"
+-                                 alt="">
+-                        </a>
+-                        <div class="card-body">
+-                            <h4 class="card-title">
+-                                <a href="#">Худи черного цвета с монограммами adidas Originals</a>
+-                            </h4>
+-                            <h5>6 090,00 руб.</h5>
+-                            <p class="card-text">Мягкая ткань для свитшотов. Стиль и комфорт – это образ жизни.</p>
+-                        </div>
+-                        <div class="card-footer text-center">
+-                            <button type="button" class="btn btn-outline-success">Отправить в корзину</button>
+-                        </div>
+-                    </div>
+-                </div>
+-
+-                <div class="col-lg-4 col-md-6 mb-4">
+-                    <div class="card h-100">
+-                        <a href="#">
+-                            <img class="card-img-top"
+-                                 src="vendor/img/products/Blue-jacket-The-North-Face.png" alt="">
+-                        </a>
+-                        <div class="card-body">
+-                            <h4 class="card-title">
+-                                <a href="#">Синяя куртка The North Face</a>
+-                            </h4>
+-                            <h5>23 725,00 руб.</h5>
+-                            <p class="card-text">
+-                                Гладкая ткань. Водонепроницаемое покрытие. Легкий и теплый пуховый наполнитель.
+-                            </p>
+-                        </div>
+-                        <div class="card-footer text-center">
+-                            <button type="button" class="btn btn-outline-success">Отправить в корзину</button>
+-                        </div>
+-                    </div>
+-                </div>
+-
++                {%for product in products%}
+                 <div class="col-lg-4 col-md-6 mb-4">
+                     <div class="card h-100">
+                         <a href="#">
+                             <img class="card-img-top"
+-                                 src="vendor/img/products/Brown-sports-oversized-top-ASOS-DESIGN.png"
++                                 src= {{product.image}}
+                                  alt="">
+                         </a>
+                         <div class="card-body">
+                             <h4 class="card-title">
+-                                <a href="#">Коричневый спортивный oversized-топ ASOS DESIGN</a>
++                                <a href="#">{{product.name}}</a>
+                             </h4>
+-                            <h5>3 390,00 руб.</h5>
+-                            <p class="card-text">Материал с плюшевой текстурой. Удобный и мягкий.</p>
++                            <h5>{{product.price}}</h5>
++                            <p class="card-text">{{product.description}}</p>
+                         </div>
+                         <div class="card-footer text-center">
+                             <button type="button" class="btn btn-outline-success">Отправить в корзину</button>
+                         </div>
+                     </div>
+                 </div>
+-
+-                <div class="col-lg-4 col-md-6 mb-4">
+-                    <div class="card h-100">
+-                        <a href="#">
+-                            <img class="card-img-top"
+-                                 src="vendor/img/products/Black-Nike-Heritage-backpack.png"
+-                                 alt="">
+-                        </a>
+-                        <div class="card-body">
+-                            <h4 class="card-title">
+-                                <a href="#">Черный рюкзак Nike Heritage</a>
+-                            </h4>
+-                            <h5>2 340,00 руб.</h5>
+-                            <p class="card-text">Плотная ткань. Легкий материал.</p>
+-                        </div>
+-                        <div class="card-footer text-center">
+-                            <button type="button" class="btn btn-outline-success">Отправить в корзину</button>
+-                        </div>
+-                    </div>
+-                </div>
+-
+-                <div class="col-lg-4 col-md-6 mb-4">
+-                    <div class="card h-100">
+-                        <a href="#">
+-                            <img class="card-img-top"
+-                                 src="vendor/img/products/Black-Dr-Martens-shoes.png"
+-                                 alt="">
+-                        </a>
+-                        <div class="card-body">
+-                            <h4 class="card-title">
+-                                <a href="#">Черные туфли на платформе с 3 парами люверсов Dr Martens 1461 Bex</a>
+-                            </h4>
+-                            <h5>13 590,00 руб.</h5>
+-                            <p class="card-text">Гладкий кожаный верх. Натуральный материал.</p>
+-                        </div>
+-                        <div class="card-footer text-center">
+-                            <button type="button" class="btn btn-outline-success">Отправить в корзину</button>
+-                        </div>
+-                    </div>
+-                </div>
+-
+-                <div class="col-lg-4 col-md-6 mb-4">
+-                    <div class="card h-100">
+-                        <a href="#">
+-                            <img class="card-img-top"
+-                                 src="vendor/img/products/Dark-blue-wide-leg-ASOs-DESIGN-trousers.png"
+-                                 alt="">
+-                        </a>
+-                        <div class="card-body">
+-                            <h4 class="card-title">
+-                                <a href="#">Темно-синие широкие строгие брюки ASOS DESIGN</a>
+-                            </h4>
+-                            <h5>2 890,00 руб.</h5>
+-                            <p class="card-text">Легкая эластичная ткань сирсакер Фактурная ткань.</p>
+-                        </div>
+-                        <div class="card-footer text-center">
+-                            <button type="button" class="btn btn-outline-success">Отправить в корзину</button>
+-                        </div>
+-                    </div>
+-                </div>
+-
+-            </div>
++                {% endfor %}
+ 
+             <nav aria-label="Page navigation example">
+                 <ul class="pagination justify-content-center">
+@@ -265,8 +164,8 @@
+ </footer>
+ 
+ <!-- Bootstrap core JavaScript -->
+-<script src="vendor/jquery/jquery.min.js"></script>
+-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
++<script src="/static/vendor/jquery/jquery.min.js"></script>
++<script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+         crossorigin="anonymous"></script>
+Index: d18/product/views.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/d18/product/views.py b/d18/product/views.py
+--- a/d18/product/views.py	(revision c8b02d8982e8d93a0604c4b84798a05f0260eec2)
++++ b/d18/product/views.py	(revision 0c4996650be442e4d075381bdca535361823a911)
+@@ -1,3 +1,46 @@
+ from django.shortcuts import render
+ 
+-# Create your views here.
++def index(request):
++    context ={
++
++            'title': 'магааааааааз'
++        }
++
++    return render(request, 'index.html', context = context)
++
++
++def products(request):
++    context = {
++        'products' : [
++            {'image':'/static/vendor/img/products/Adidas-hoodie.png',
++            'name':'ivwue',
++            'price':'45692340562346582374776411326490',
++            'description':'сасен'},
++
++            {'image': '/static/vendor/img/products/Blue-jacket-The-North-Face.png',
++            'name': 'uwfepov',
++            'price':'45692340562346582374776411326490',
++            'description': 'сасен'},
++
++            {'image': '/static/vendor/img/products/Brown-sports-oversized-top-ASOS-DESIGN.png',
++            'name': 'auhcfpso',
++            'price':'45692340562346582374776411326490',
++            'description': 'сасен'},
++
++            {'image': '/static/vendor/img/products/Black-Nike-Heritage-backpack.png',
++            'name': 'qufoajic',
++            'price':'45692340562346582374776411326490',
++            'description': 'сасен'},
++
++            {'image': '/static/vendor/img/products/Black-Dr-Martens-shoes.png',
++            'name': 'atydiui',
++            'price':'45692340562346582374776411326490',
++            'description': 'сасен'},
++
++            {'image': '/static/vendor/img/products/Dark-blue-wide-leg-ASOs-DESIGN-trousers.png',
++            'name': 'asdyoiujio',
++            'price':'45692340562346582374776411326490',
++            'description': 'сасен'},
++    ]
++    }
++    return render(request, 'products.html', context = context)
+diff --git a/d18/db.sqlite3 b/d18/db.sqlite3
+new file mode 100644
+index 0000000000000000000000000000000000000000..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+GIT binary patch
+literal 0
+Hc$@<O00001
+
